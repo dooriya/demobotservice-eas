@@ -79,5 +79,20 @@ namespace Microsoft.Bot.Sample.LuisBot
             await context.PostAsync($"Your intent: Music.Play");
             context.Wait(MessageReceived);
         }
+
+        private bool TryFindEntity(LuisResult result, string entityType, out string entityValue)
+        {
+            EntityRecommendation entity;
+            if (result.TryFindEntity(entityType, out entity))
+            {
+                entityValue = entity.Entity;
+                return true;
+            }
+            else
+            {
+                entityValue = string.Empty;
+                return false;
+            }
+        }
     }
 }
