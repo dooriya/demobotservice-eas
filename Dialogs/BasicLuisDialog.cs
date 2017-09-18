@@ -1,10 +1,13 @@
 using System;
 using System.Configuration;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -12,6 +15,8 @@ namespace Microsoft.Bot.Sample.LuisBot
     [Serializable]
     public class BasicLuisDialog : LuisDialog<object>
     {
+        private static readonly string CurrentWeatherReplyTemplate = "Hi, It's {0} in {1} with temprature {2} deg c.";
+
         public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(ConfigurationManager.AppSettings["LuisAppId"], ConfigurationManager.AppSettings["LuisAPIKey"])))
         {
         }
@@ -80,6 +85,29 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("Weather.GetForecast")]
+        public async Task GetWeatherForecastIntent(IDialogContext context, LuisResult result)
+        {
+            string city;
+            if (TryFindEntity(result, "Weather.Location", out city))
+            {
+                var weatherResponse = await this.GetCurrentWeatherByCityName(city);
+                string replyMessage = string.Format(CurrentWeatherReplyTemplate,
+                    weatherResponse.Summary,
+                    weatherResponse.City,
+                    weatherResponse.Temp);
+
+                await context.SayAsync(text: replyMessage, speak: replyMessage);
+
+            }
+            else
+            {
+                await context.SayAsync(text: "Sorry, no information!", speak: "Sorry, no information!");
+            }
+
+            context.Wait(MessageReceived);
+        }
+
         private bool TryFindEntity(LuisResult result, string entityType, out string entityValue)
         {
             EntityRecommendation entity;
@@ -92,6 +120,36 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 entityValue = string.Empty;
                 return false;
+            }
+        }
+
+        private async Task<GetCurrentWeatherResponse> GetCurrentWeatherByCityName(string city)
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("http://api.openweathermap.org");
+                    HttpResponseMessage response = await client.GetAsync($"/data/2.5/weather?q={city}&units=metric&APPID=d01499238c7a7f3173938f86b7ad1fc8");
+                    response.EnsureSuccessStatusCode();
+
+                    var stringResult = await response.Content.ReadAsStringAsync();
+
+                    var rawWeather = JsonConvert.DeserializeObject<OpenWeatherResponse>(stringResult);
+                    string summary = string.Join(",", rawWeather.Weather.Select(x => x.Main));
+
+                    return new GetCurrentWeatherResponse
+                    {
+                        Temp = rawWeather.Main.Temp,
+                        Summary = string.Join(",", rawWeather.Weather.Select(x => x.Main)),
+                        City = rawWeather.Name
+                    };
+                }
+                catch (HttpRequestException httpRequestException)
+                {
+                    Console.WriteLine($"Error getting weather from OpenWeather: {httpRequestException.Message}");
+                    throw;
+                }
             }
         }
     }
