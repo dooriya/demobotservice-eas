@@ -48,9 +48,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         replyMessage = "My name is Louis, I'll try to demonstrate the power of LUIS.ai and Microsoft Bot Framework.";
                         break;
                     case "microsoft":
-                        replyMessage = "Microsoft is a big company that makes computer software and video games for users around the world." +
-                            "Bill Gates and Paul Allen founded the company in 1975." +
-                            "As of 2016, it is the world's largest software maker by revenue, and one of the world's most valuable companies.";
+                        replyMessage = "Microsoft is a big company that makes computer software and video games for users around the world. And it is founded in 1975 by Bill Gates and Paul Allen. As of 2016, it is the world's largest software maker by revenue, and one of the world's most valuable companies.";
                         break;
                     case "bill gates":
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
