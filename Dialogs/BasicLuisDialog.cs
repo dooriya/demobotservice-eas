@@ -59,9 +59,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
                     case "arthur":
-                    case "Asir":
-                    case "awesome":
-                        replyMessage = "Yes, Arthur is Windows phone fantastics!";
+                        replyMessage = "Arthur is Windows phone fantastics! And he is very rich!";
                         break;
                     default:
                         //replyMessage = $"Sorry, I have no information for {entity}";
