@@ -98,7 +98,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             }
 
             // For Julia's demo
-            if (result.Query.ToLower().Contains("julia"))
+            if (result.Query.ToLower().StartsWith("julia"))
             {
                 replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
