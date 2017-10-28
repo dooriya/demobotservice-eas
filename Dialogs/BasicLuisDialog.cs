@@ -66,7 +66,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     case "bill gates":
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
-                    case "Julia":
+                    case "julia":
                         replyMessage = "Which Julia?";
                         break;
                     case "arthur":
@@ -74,6 +74,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         break;
                     default:
                         replyMessage = $"Sorry, I have no information for {entity}";
+                        //replyMessage = $"Yes, I love {entity} very much.";
                         break;
                 }
             }
