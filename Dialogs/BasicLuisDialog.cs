@@ -25,9 +25,9 @@ namespace Microsoft.Bot.Sample.LuisBot
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
             string message;
-            
+
             // For Julia's demo
-            if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
+            if (result.Query.ToLower().Contains("julia"))
             {
                 message = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
@@ -35,7 +35,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 message = $"Sorry I did not understand";
             }
-            
+
             await context.PostAsync(message);
             context.Wait(MessageReceived);
         }
@@ -49,7 +49,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 await context.PostAsync($"Good bye, dear");
             }
-            else if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
+            else if (result.Query.ToLower().Contains("julia"))
             {
                 await context.PostAsync("Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework");
             }
@@ -60,7 +60,7 @@ namespace Microsoft.Bot.Sample.LuisBot
 
             context.Wait(MessageReceived);
         }
-        
+
         [LuisIntent("Info.General")]
         public async Task GeneralInfoIntent(IDialogContext context, LuisResult result)
         {
@@ -81,7 +81,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
                     case "julia":
-                        replyMessage = "Which Julia?";
+                        replyMessage = "Which Julia? Julia Liuson?";
                         break;
                     case "arthur":
                         replyMessage = "Arthur is Windows phone fantastics! And he is very rich!";
@@ -98,7 +98,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             }
 
             // For Julia's demo
-            if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
+            if (result.Query.ToLower().Contains("julia"))
             {
                 replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
@@ -106,7 +106,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             await context.SayAsync(text: replyMessage, speak: replyMessage);
             context.Wait(MessageReceived);
         }
-        
+
         [LuisIntent("Music.Play")]
         public async Task PlayMusicIntent(IDialogContext context, LuisResult result)
         {
