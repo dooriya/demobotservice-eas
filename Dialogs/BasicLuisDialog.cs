@@ -35,6 +35,12 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("greetings")]
         public async Task GreetingsIntent(IDialogContext context, LuisResult result)
         {
+            if (result.Query.ToLower().Contains("bye"))
+            {
+                await context.PostAsync($"Good bye, dear");
+                return;
+            }
+
             await context.PostAsync($"Hi there, what can I do for you?");
             context.Wait(MessageReceived);
         }
@@ -44,9 +50,9 @@ namespace Microsoft.Bot.Sample.LuisBot
         {
             string replyMessage;
             string entity;
+
             if (TryFindEntity(result, "Info.Keyword", out entity))
             {
-    
                 switch (entity.ToLowerInvariant())
                 {
                     case "yourself":
@@ -58,12 +64,14 @@ namespace Microsoft.Bot.Sample.LuisBot
                     case "bill gates":
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
+                    case "Julia":
+                        replyMessage = "Which Julia?";
+                        break;
                     case "arthur":
                         replyMessage = "Arthur is Windows phone fantastics! And he is very rich!";
                         break;
                     default:
-                        //replyMessage = $"Sorry, I have no information for {entity}";
-                        replyMessage = $"Yes, I love {entity}";
+                        replyMessage = $"Sorry, I have no information for {entity}";
                         break;
                 }
             }
@@ -71,7 +79,13 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 replyMessage = "Sorry, no information!";
             }
-    
+
+            // For Julia's demo
+            if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
+            {
+                replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation.";
+            }
+
             await context.SayAsync(text: replyMessage, speak: replyMessage);
             context.Wait(MessageReceived);
         }
