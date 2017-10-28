@@ -38,10 +38,12 @@ namespace Microsoft.Bot.Sample.LuisBot
             if (result.Query.ToLower().Contains("bye"))
             {
                 await context.PostAsync($"Good bye, dear");
-                return;
+            }
+            else
+            {
+                await context.PostAsync($"Hi there, what can I do for you?");
             }
 
-            await context.PostAsync($"Hi there, what can I do for you?");
             context.Wait(MessageReceived);
         }
         
