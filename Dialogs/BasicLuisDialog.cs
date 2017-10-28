@@ -24,18 +24,19 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
+            string message;
+            
             // For Julia's demo
             if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
             {
-                replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation.";
+                message = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation.";
             }
             else
             {
-                string message = $"Sorry I did not understand";
+                message = $"Sorry I did not understand";
             }
             
             await context.PostAsync(message);
-    
             context.Wait(MessageReceived);
         }
 
