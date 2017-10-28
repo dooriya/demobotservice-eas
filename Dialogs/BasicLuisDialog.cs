@@ -100,7 +100,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             // For Julia's demo
             if (result.Query.StartsWith("Julia", StringComparison.OrdinalIgnoreCase))
             {
-                replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation.";
+                replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
 
             await context.SayAsync(text: replyMessage, speak: replyMessage);
