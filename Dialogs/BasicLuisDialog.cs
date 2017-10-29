@@ -27,7 +27,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             string message;
 
             // For Julia's demo
-            if (result.Query.ToLower().Contains("julia"))
+            if (result.Query.ToLower().Contains("julia") || result.Query.ToLower().StartsWith("juli"))
             {
                 message = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
@@ -49,7 +49,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 await context.PostAsync($"Good bye, dear");
             }
-            else if (result.Query.ToLower().Contains("julia"))
+            else if (result.Query.ToLower().Contains("julia") || result.Query.ToLower().StartsWith("juli"))
             {
                 await context.PostAsync("Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework");
             }
@@ -98,7 +98,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             }
 
             // For Julia's demo
-            if (result.Query.ToLower().StartsWith("julia"))
+            if (result.Query.ToLower().StartsWith("juli"))
             {
                 replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
