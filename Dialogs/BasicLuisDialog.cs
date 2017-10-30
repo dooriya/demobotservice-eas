@@ -81,7 +81,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
                     case "julia":
-                        replyMessage = "Which Julia?";
+                        replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
                         break;
                     case "arthur":
                         replyMessage = "Arthur is Windows phone fantastics! And he is very rich!";
@@ -98,7 +98,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             }
 
             // For Julia's demo
-            if (result.Query.ToLower().StartsWith("juli"))
+            if (result.Query.ToLower().Contains("julia"))
             {
                 replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
             }
