@@ -24,9 +24,19 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("None")]
         public async Task NoneIntent(IDialogContext context, LuisResult result)
         {
-            string message = $"Sorry I did not understand";
+            string message;
+
+            // For Julia's demo
+            if (result.Query.ToLower().Contains("julia") || result.Query.ToLower().StartsWith("juli"))
+            {
+                message = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
+            }
+            else
+            {
+                message = $"Sorry I did not understand";
+            }
+
             await context.PostAsync(message);
-    
             context.Wait(MessageReceived);
         }
 
@@ -35,18 +45,30 @@ namespace Microsoft.Bot.Sample.LuisBot
         [LuisIntent("greetings")]
         public async Task GreetingsIntent(IDialogContext context, LuisResult result)
         {
-            await context.PostAsync($"Hi there, what can I do for you?");
+            if (result.Query.ToLower().Contains("bye"))
+            {
+                await context.PostAsync($"Good bye, dear");
+            }
+            else if (result.Query.ToLower().Contains("julia") || result.Query.ToLower().StartsWith("juli"))
+            {
+                await context.PostAsync("Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework");
+            }
+            else
+            {
+                await context.PostAsync($"Hi there, what can I do for you?");
+            }
+
             context.Wait(MessageReceived);
         }
-        
+
         [LuisIntent("Info.General")]
         public async Task GeneralInfoIntent(IDialogContext context, LuisResult result)
         {
             string replyMessage;
             string entity;
+
             if (TryFindEntity(result, "Info.Keyword", out entity))
             {
-    
                 switch (entity.ToLowerInvariant())
                 {
                     case "yourself":
@@ -58,12 +80,15 @@ namespace Microsoft.Bot.Sample.LuisBot
                     case "bill gates":
                         replyMessage = "Bill Gates is a co-founder of the Microsoft Corporation.";
                         break;
+                    case "julia":
+                        replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
+                        break;
                     case "arthur":
                         replyMessage = "Arthur is Windows phone fantastics! And he is very rich!";
                         break;
                     default:
-                        //replyMessage = $"Sorry, I have no information for {entity}";
-                        replyMessage = $"Yes, I love {entity}";
+                        replyMessage = $"Sorry, I have no information for {entity}";
+                        //replyMessage = $"Yes, I love {entity} very much.";
                         break;
                 }
             }
@@ -71,11 +96,17 @@ namespace Microsoft.Bot.Sample.LuisBot
             {
                 replyMessage = "Sorry, no information!";
             }
-    
+
+            // For Julia's demo
+            if (result.Query.ToLower().Contains("julia"))
+            {
+                replyMessage = "Julia Liuson is the Corporate Vice President of Visual Studio at Microsoft Corporation. And she oversees business and software development for Visual Studio and the .NET Framework";
+            }
+
             await context.SayAsync(text: replyMessage, speak: replyMessage);
             context.Wait(MessageReceived);
         }
-        
+
         [LuisIntent("Music.Play")]
         public async Task PlayMusicIntent(IDialogContext context, LuisResult result)
         {
