@@ -106,6 +106,36 @@ namespace Microsoft.Bot.Sample.LuisBot
             context.Wait(MessageReceived);
         }
 
+        [LuisIntent("GetDateTime")]
+        public async Task GetDateTimeIntent(IDialogContext context, LuisResult result)
+        {
+            string dateTimeType;
+            string dateTimeEntity;
+            TryFindEntity(result, "DateTime.Type", out dateTimeType);
+            TryFindEntity(result, "datetimeV2", out dateTimeEntity);
+
+            string replyMessage;
+            DateTime dateTime = DateTime.Now;
+            switch (dateTimeType)
+            {
+                case "time":
+                    replyMessage = $"It is {dateTime.TimeOfDay} now";
+                    break;
+                case "date":
+                    replyMessage = $"It is {dateTime.Date} today";
+                    break;
+                case "day":
+                    replyMessage = $"It is {dateTime.DayOfWeek} today";
+                    break;
+                default:
+                    replyMessage = $"It is {dateTime.TimeOfDay} now";
+                    break;
+            }
+
+            await context.SayAsync(text: replyMessage, speak: replyMessage);
+            context.Wait(MessageReceived);
+        }
+
         private bool TryFindEntity(LuisResult result, string entityType, out string entityValue)
         {
             EntityRecommendation entity;
